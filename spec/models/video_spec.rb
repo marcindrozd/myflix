@@ -21,4 +21,14 @@ describe Video do
 
     expect(Video.first.category).to eq(category)
   end
+
+  it "requires a title" do
+    video = Video.create(title: "", description: "Fun movie!")
+    expect(Video.first).to eq(nil)
+  end
+
+  it "requires a description" do
+    video = Video.create(title: "Futurama", description: "")
+    expect(Video.first).to eq(nil)
+  end
 end
