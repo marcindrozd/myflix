@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shoulda/matchers'
 
 describe Video do
   it "saves itself" do
@@ -33,4 +34,6 @@ describe Video do
     expect(Video.first).to eq(nil)
     expect(Video.count).to eq(0)
   end
+
+  it { should belong_to(:category) }
 end

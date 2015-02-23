@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shoulda/matchers'
 
 describe Category do
   it "saves itself" do
@@ -23,4 +24,6 @@ describe Category do
     category.save
     expect(Category.first.videos).to eq([futurama, indiana])
   end
+
+  it { should have_many(:videos) }
 end
