@@ -10,19 +10,17 @@ describe Category do
 
   it "has many videos" do
     category = Category.new(name: "Adventure")
-    video1 = Video.new(title: "Futurama",
-                      description: "This is an awesome show",
-                      small_img_url: "/futurama_sm.jpg",
-                      large_img_url: "/futurama_lg.jpg")
-    video2 = Video.new(title: "Indiana Jones",
+    indiana = Video.create(title: "Indiana Jones",
                       description: "This is a great movie",
                       small_img_url: "/indiana_sm.jpg",
                       large_img_url: "/indiana_lg.jpg")
-    video1.save
-    video2.save
-    category.videos << video1
-    category.videos << video2
+    futurama = Video.create(title: "Futurama",
+                      description: "This is an awesome show",
+                      small_img_url: "/futurama_sm.jpg",
+                      large_img_url: "/futurama_lg.jpg")
+    category.videos << indiana
+    category.videos << futurama
     category.save
-    expect(Category.first.videos).to eq([video1, video2])
+    expect(Category.first.videos).to eq([futurama, indiana])
   end
 end
