@@ -25,10 +25,12 @@ describe Video do
   it "requires a title" do
     video = Video.create(title: "", description: "Fun movie!")
     expect(Video.first).to eq(nil)
+    expect(Video.count).to eq(0)
   end
 
   it "requires a description" do
     video = Video.create(title: "Futurama", description: "")
     expect(Video.first).to eq(nil)
+    expect(Video.count).to eq(0)
   end
 end
