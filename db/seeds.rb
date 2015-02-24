@@ -73,3 +73,8 @@ Video.create(title: "Cars 2",
             small_img_url: '/tmp/cars.jpg',
             large_img_url: '/tmp/cars_large.jpg',
             category: categories[0])
+
+
+User.create(full_name: "Napoleon Bonaparte",
+            email_address: "napoleon@example.com",
+            password: "password")
