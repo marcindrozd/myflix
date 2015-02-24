@@ -49,3 +49,27 @@ Video.create(title: "South Park",
             small_img_url: '/tmp/south_park.jpg',
             large_img_url: '/tmp/south_park_large.jpg',
             category: categories[0])
+
+Video.create(title: "Dinosaurs",
+            description: "Dinosaurs follows the life of a family of dinosaurs, living in a modern world. They have TVs, fridges, etc. The only humans around are cavemen, who are viewed as pets and wild animals.",
+            small_img_url: '/tmp/dinosaurs.jpg',
+            large_img_url: '/tmp/dinosaurs_large.jpg',
+            category: categories[0])
+
+Video.create(title: "The Office",
+            description: "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium. Based on the hit BBC series.",
+            small_img_url: '/tmp/office.jpg',
+            large_img_url: '/tmp/office_large.jpg',
+            category: categories[0])
+
+Video.create(title: "Friends",
+            description: "Follows the lives of six 20-something friends living in Manhattan.",
+            small_img_url: '/tmp/friends.jpg',
+            large_img_url: '/tmp/friends_large.jpg',
+            category: categories[0])
+
+Video.create(title: "Cars 2",
+            description: "Star race car Lightning McQueen and his pal Mater head overseas to compete in the World Grand Prix race. But the road to the championship becomes rocky as Mater gets caught up in an intriguing adventure of his own: international espionage.",
+            small_img_url: '/tmp/cars.jpg',
+            large_img_url: '/tmp/cars_large.jpg',
+            category: categories[0])
