@@ -16,6 +16,5 @@ Myflix::Application.routes.draw do
   end
 
   resources :users, only: [:create]
-
-  get '/categories/:id', to: "categories#show", as: "category"
+  resources :categories, only: [:show]
 end
