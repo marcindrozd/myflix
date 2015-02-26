@@ -14,6 +14,15 @@ describe VideosController do
       get :show, id: movie.id
       expect(response).to redirect_to root_path
     end
+
+    it "sets the @reviews variable" do
+      session[:user_id] = Fabricate(:user).id
+      movie = Fabricate(:video)
+      review1 = Fabricate(:review, video: movie)
+      review2 = Fabricate(:review, video: movie)
+      get :show, id: movie.id
+      expect(assigns(:reviews)).to match_array([review1, review2])
+    end
   end
 
   describe "GET search" do

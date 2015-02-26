@@ -62,7 +62,7 @@ Video.create(title: "The Office",
             large_img_url: '/tmp/office_large.jpg',
             category: categories[0])
 
-Video.create(title: "Friends",
+friends = Video.create(title: "Friends",
             description: "Follows the lives of six 20-something friends living in Manhattan.",
             small_img_url: '/tmp/friends.jpg',
             large_img_url: '/tmp/friends_large.jpg',
@@ -75,6 +75,9 @@ Video.create(title: "Cars 2",
             category: categories[0])
 
 
-User.create(full_name: "Napoleon Bonaparte",
+napoleon = User.create(full_name: "Napoleon Bonaparte",
             email_address: "napoleon@example.com",
             password: "password")
+
+Review.create(user: napoleon, video: friends, rating: "5", content: "This is the best show ever!")
+Review.create(user: napoleon, video: friends, rating: "1", content: "This show is overrated.")
