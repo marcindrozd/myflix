@@ -12,7 +12,7 @@ describe VideosController do
     it "redirects unauthenticated user to root path" do
       movie = Fabricate(:video)
       get :show, id: movie.id
-      response.should redirect_to root_path
+      expect(response).to redirect_to root_path
     end
   end
 
@@ -27,7 +27,7 @@ describe VideosController do
     it "redirects unathenticated user to root path" do
       movie = Fabricate(:video)
       get :search, video: "host"
-      response.should redirect_to root_path
+      expect(response).to redirect_to root_path
     end
   end
 end

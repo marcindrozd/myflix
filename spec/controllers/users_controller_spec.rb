@@ -19,7 +19,7 @@ describe UsersController do
       end
 
       it "redirects to home for successfully created user" do
-        response.should redirect_to home_path
+        expect(response).to redirect_to home_path
       end
     end
 
@@ -33,7 +33,7 @@ describe UsersController do
       end
 
       it "renders new template" do
-        response.should render_template :new
+        expect(response).to render_template :new
       end
     end
   end
