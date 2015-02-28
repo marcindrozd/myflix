@@ -78,4 +78,35 @@ describe QueueItemsController do
       expect(response).to redirect_to root_path
     end
   end
+
+  describe "DELETE destroy" do
+    it "redirects authenticated user to my queue site" do
+      session[:user_id] = Fabricate(:user).id
+      queue_item = Fabricate(:queue_item)
+      delete :destroy, id: queue_item
+      expect(response).to redirect_to my_queue_path
+    end
+
+    it "removes the video from the queue" do
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      queue_item = Fabricate(:queue_item, user: bob)
+      delete :destroy, id: queue_item
+      expect(QueueItem.count).to eq(0)
+    end
+
+    it "does not remove a video from other users queue" do
+      alice = Fabricate(:user)
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      queue_item = Fabricate(:queue_item, user: alice)
+      delete :destroy, id: queue_item
+      expect(QueueItem.count).to eq(1)
+    end
+
+    it "redirects to root path for unauthenticated user" do
+      delete :destroy
+      expect(response).to redirect_to root_path
+    end
+  end
 end

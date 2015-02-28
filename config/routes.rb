@@ -12,6 +12,7 @@ Myflix::Application.routes.draw do
 
   get '/my_queue', to: "queue_items#index"
   post '/my_queue', to: "queue_items#create"
+  delete '/my_queue', to: "queue_items#destroy"
 
   resources :videos, only: [:show] do
     collection do
