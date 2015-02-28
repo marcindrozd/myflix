@@ -105,7 +105,8 @@ describe QueueItemsController do
     end
 
     it "redirects to root path for unauthenticated user" do
-      delete :destroy
+      queue_item = Fabricate(:queue_item)
+      delete :destroy, id: queue_item
       expect(response).to redirect_to root_path
     end
   end
