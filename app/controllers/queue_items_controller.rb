@@ -14,7 +14,7 @@ class QueueItemsController < ApplicationController
   def destroy
     queue_item = QueueItem.find(params[:id])
     queue_item.destroy if queue_item.user == current_user
-    recalculate_order
+    current_user.recalculate_order
 
     redirect_to my_queue_path
   end
@@ -22,7 +22,7 @@ class QueueItemsController < ApplicationController
   def update_queue
     begin
       update_queue_items
-      recalculate_order
+      current_user.recalculate_order
     rescue ActiveRecord::RecordInvalid
       flash[:danger] = "Invalid position number"
     end
@@ -46,12 +46,6 @@ class QueueItemsController < ApplicationController
         queue_item = QueueItem.find(item["id"])
         queue_item.update_attributes!(list_order: item["list_order"]) if queue_item.user == current_user
       end
-    end
-  end
-
-  def recalculate_order
-    current_user.queue_items.each_with_index do |item, index|
-      item.update_attributes(list_order: index + 1)
     end
   end
 end
