@@ -109,5 +109,92 @@ describe QueueItemsController do
       delete :destroy, id: queue_item
       expect(response).to redirect_to root_path
     end
+
+    it "recalculates list order after an item was removed" do
+      alice = Fabricate(:user)
+      session[:user_id] = alice.id
+      queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
+      queue_item2 = Fabricate(:queue_item, user: alice, list_order: 2)
+      delete :destroy, id: queue_item1
+      expect(queue_item2.reload.list_order).to eq(1)
+    end
+  end
+
+  describe "POST update_queue" do
+    context "with valid data" do
+      it "redirects to my_queue path" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, list_order: 2)
+        queue_item2 = Fabricate(:queue_item, list_order: 1)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1 }]
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "changes the order for queue items" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, list_order: 2)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1 }]
+        expect(alice.queue_items).to eq([queue_item2, queue_item1])
+      end
+
+      it "recalculates the order for the remaining queue items" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: alice, list_order: 2)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 }, { id: queue_item2.id, list_order: 2 }]
+        expect(queue_item1.reload.list_order).to eq(2)
+        expect(queue_item2.reload.list_order).to eq(1)
+      end
+
+      it "does not allow updating the queue item for another user" do
+        alice = Fabricate(:user)
+        bob = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
+        queue_item2 = Fabricate(:queue_item, user: bob, list_order: 2)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 }, { id: queue_item2.id, list_order: 1 }]
+        expect(queue_item2.reload.list_order).to eq(2)
+      end
+    end
+
+    context "with invalid data" do
+      it "redirects to my queue path" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, list_order: 2)
+        queue_item2 = Fabricate(:queue_item, user: alice, list_order: 1)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1.5 }]
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it "displays error message" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, list_order: 2)
+        queue_item2 = Fabricate(:queue_item, user: alice, list_order: 1)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1.5 }]
+        expect(flash[:danger]).to be_present
+      end
+
+      it "does not update queue items" do
+        alice = Fabricate(:user)
+        session[:user_id] = alice.id
+        queue_item1 = Fabricate(:queue_item, user: alice, list_order: 2)
+        queue_item2 = Fabricate(:queue_item, user: alice, list_order: 1)
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 }, { id: queue_item2.id, list_order: 2 }]
+        expect(queue_item1.reload.list_order).to eq(2)
+      end
+    end
+
+    context "with unauthenticated user" do
+      it "redirects to root path" do
+        post :update_queue
+        expect(response).to redirect_to root_path
+      end
+    end
   end
 end

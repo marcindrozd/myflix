@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe QueueItem do
+  it { should validate_numericality_of(:list_order).only_integer }
+
   describe "#video_title" do
     it "returns video title" do
       futurama = Fabricate(:video, title: "Futurama")
