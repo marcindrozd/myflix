@@ -37,6 +37,34 @@ describe QueueItem do
     end
   end
 
+  describe "#video_category=" do
+    it "updates the existing rating of the review" do
+      video = Fabricate(:video)
+      bob = Fabricate(:user)
+      review = Fabricate(:review, user: bob, video: video, rating: 4)
+      item1 = Fabricate(:queue_item, video: video, user: bob)
+      item1.video_rating = 3
+      expect(item1.reload.video_rating).to eq(3)
+    end
+
+    it "clears the existing rating when blank selected" do
+      video = Fabricate(:video)
+      bob = Fabricate(:user)
+      review = Fabricate(:review, user: bob, video: video, rating: 4)
+      item1 = Fabricate(:queue_item, video: video, user: bob)
+      item1.video_rating = nil
+      expect(item1.reload.video_rating).to be_nil
+    end
+
+    it "creates a new review with rating when there is none present" do
+      video = Fabricate(:video)
+      bob = Fabricate(:user)
+      item1 = Fabricate(:queue_item, video: video, user: bob)
+      item1.video_rating = 4
+      expect(item1.reload.video_rating).to eq(4)
+    end
+  end
+
   describe "#category" do
     it "returns category" do
       category = Category.create(name: "comedy")
