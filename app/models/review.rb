@@ -6,6 +6,6 @@ class Review < ActiveRecord::Base
 
   def self.average(video)
     return "0" if video.reviews.count == 0
-    video.reviews.average(:rating)
+    sprintf "%.1f", video.reviews.average(:rating)
   end
 end
