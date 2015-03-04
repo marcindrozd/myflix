@@ -78,6 +78,10 @@ describe QueueItemsController do
   end
 
   describe "DELETE destroy" do
+    it_behaves_like "requires sign in" do
+      let(:action) { delete :destroy, id: Fabricate(:queue_item).id }
+    end
+
     it "redirects authenticated user to my queue site" do
       set_current_user
       queue_item = Fabricate(:queue_item)
@@ -100,10 +104,6 @@ describe QueueItemsController do
       queue_item = Fabricate(:queue_item, user: alice)
       delete :destroy, id: queue_item
       expect(QueueItem.count).to eq(1)
-    end
-
-    it_behaves_like "requires sign in" do
-      let(:action) { delete :destroy, id: Fabricate(:queue_item).id }
     end
 
     it "recalculates list order after an item was removed" do
