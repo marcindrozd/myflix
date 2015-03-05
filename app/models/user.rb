@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
       item.update_attributes(list_order: index + 1)
     end
   end
+
+  def not_in_queue?(video)
+    !queue_items.map(&:video_id).include?(video.id)
+  end
 end
