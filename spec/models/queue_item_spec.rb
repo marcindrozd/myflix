@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe QueueItem do
+  it { should validate_numericality_of(:list_order).only_integer }
+
   describe "#video_title" do
     it "returns video title" do
       futurama = Fabricate(:video, title: "Futurama")
@@ -32,6 +34,34 @@ describe QueueItem do
       video = Fabricate(:video, category: category)
       item1 = Fabricate(:queue_item, video: video)
       expect(item1.video_category).to eq("comedy")
+    end
+  end
+
+  describe "#video_category=" do
+    it "updates the existing rating of the review" do
+      video = Fabricate(:video)
+      bob = Fabricate(:user)
+      review = Fabricate(:review, user: bob, video: video, rating: 4)
+      item1 = Fabricate(:queue_item, video: video, user: bob)
+      item1.video_rating = 3
+      expect(item1.reload.video_rating).to eq(3)
+    end
+
+    it "clears the existing rating when blank selected" do
+      video = Fabricate(:video)
+      bob = Fabricate(:user)
+      review = Fabricate(:review, user: bob, video: video, rating: 4)
+      item1 = Fabricate(:queue_item, video: video, user: bob)
+      item1.video_rating = nil
+      expect(item1.reload.video_rating).to be_nil
+    end
+
+    it "creates a new review with rating when there is none present" do
+      video = Fabricate(:video)
+      bob = Fabricate(:user)
+      item1 = Fabricate(:queue_item, video: video, user: bob)
+      item1.video_rating = 4
+      expect(item1.reload.video_rating).to eq(4)
     end
   end
 

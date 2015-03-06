@@ -12,7 +12,8 @@
           = @video.description
         .actions
           %a.btn.btn-primary(href="") Watch Now
-          = link_to "+ My Queue", my_queue_path(video_id: @video.id), method: "post", class: "btn btn-default"
+          - if current_user.not_in_queue?(@video)
+            = link_to "+ My Queue", queue_items_path(video_id: @video.id), method: "post", class: "btn btn-default"
 
 %section.reviews.container
   .row
@@ -23,7 +24,7 @@
             %label Rate this video
             .row
               .col-sm-3
-                = f.select :rating, options_for_select([5, 4, 3, 2, 1].map {|option| [pluralize(option, "Star")]}), {}, { class: "form-control" }
+                = f.select :rating, options_for_ratings, {}, { class: "form-control" }
           .form-group
             = f.label :content, "Write Review"
             .row
