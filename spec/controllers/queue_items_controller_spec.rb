@@ -123,7 +123,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, list_order: 2)
         queue_item2 = Fabricate(:queue_item, list_order: 1)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 },
+                                          { id: queue_item2.id, list_order: 1 }]
         expect(response).to redirect_to my_queue_path
       end
 
@@ -132,7 +133,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
         queue_item2 = Fabricate(:queue_item, user: alice, list_order: 2)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 },
+                                          { id: queue_item2.id, list_order: 1 }]
         expect(alice.queue_items).to eq([queue_item2, queue_item1])
       end
 
@@ -141,7 +143,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
         queue_item2 = Fabricate(:queue_item, user: alice, list_order: 2)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 }, { id: queue_item2.id, list_order: 2 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 },
+                                          { id: queue_item2.id, list_order: 2 }]
         expect(queue_item1.reload.list_order).to eq(2)
         expect(queue_item2.reload.list_order).to eq(1)
       end
@@ -152,7 +155,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, user: alice, list_order: 1)
         queue_item2 = Fabricate(:queue_item, user: bob, list_order: 2)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 }, { id: queue_item2.id, list_order: 1 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 },
+                                          { id: queue_item2.id, list_order: 1 }]
         expect(queue_item2.reload.list_order).to eq(2)
       end
     end
@@ -163,7 +167,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, user: alice, list_order: 2)
         queue_item2 = Fabricate(:queue_item, user: alice, list_order: 1)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1.5 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 },
+                                          { id: queue_item2.id, list_order: 1.5 }]
         expect(response).to redirect_to my_queue_path
       end
 
@@ -172,7 +177,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, user: alice, list_order: 2)
         queue_item2 = Fabricate(:queue_item, user: alice, list_order: 1)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 }, { id: queue_item2.id, list_order: 1.5 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 2 },
+                                          { id: queue_item2.id, list_order: 1.5 }]
         expect(flash[:danger]).to be_present
       end
 
@@ -181,7 +187,8 @@ describe QueueItemsController do
         set_current_user(alice)
         queue_item1 = Fabricate(:queue_item, user: alice, list_order: 2)
         queue_item2 = Fabricate(:queue_item, user: alice, list_order: 1)
-        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 }, { id: queue_item2.id, list_order: 2 }]
+        post :update_queue, queue_items: [{ id: queue_item1.id, list_order: 3 },
+                                          { id: queue_item2.id, list_order: 2 }]
         expect(queue_item1.reload.list_order).to eq(2)
       end
     end
