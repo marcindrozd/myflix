@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :require_user, only: [:show]
+
   def new
     redirect_to home_path if logged_in?
     @user = User.new
