@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show]
+  before_action :require_user, only: [:show, :index]
 
   def new
     redirect_to home_path if logged_in?
@@ -20,6 +20,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def index
+    @friendships = current_user.friendships
   end
 
   private
