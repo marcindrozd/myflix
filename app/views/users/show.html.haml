@@ -5,7 +5,7 @@
         %header
           %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('#{@user.email_address}'.downcase)}?s=40")
           %h2 #{@user.full_name}'s video collections (#{@user.queue_items.size})
-          - if can_be_followed?(@user)
+          - if current_user.can_follow?(@user)
             = link_to "Follow", friendships_path(friend_id: @user.id), method: "post", class: "btn btn-default"
         %table.table
           %thead

@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
   def not_in_queue?(video)
     !queue_items.map(&:video_id).include?(video.id)
   end
+
+  def can_follow?(another_user)
+    !(self.friends.include?(another_user) || self == another_user)
+  end
 end

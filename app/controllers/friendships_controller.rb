@@ -6,10 +6,10 @@ class FriendshipsController < ApplicationController
   end
 
   def create
-    @friend = User.find(params[:friend_id])
+    friend = User.find(params[:friend_id])
 
-    unless current_user.friends.include?(@friend) || current_user == @friend
-      Friendship.create(user: current_user, friend: @friend)
+    if current_user.can_follow?(friend)
+      Friendship.create(user: current_user, friend: friend)
     end
 
     redirect_to people_path

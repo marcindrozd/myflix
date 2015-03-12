@@ -31,14 +31,6 @@ describe FriendshipsController do
       expect(response).to redirect_to(people_path)
     end
 
-    it "assigns @friend variable" do
-      alice = Fabricate(:user)
-      bob = Fabricate(:user)
-      set_current_user(alice)
-      post :create, friend_id: bob.id
-      expect(assigns(:friend)).to eq(bob)
-    end
-
     it "adds selected user to current user's friends list" do
       alice = Fabricate(:user)
       bob = Fabricate(:user)
