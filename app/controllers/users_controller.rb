@@ -12,6 +12,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "You have been registered successfully!"
       session[:user_id] = @user.id
+      UserMailer.welcome_email(@user).deliver
       redirect_to home_path
     else
       render :new
