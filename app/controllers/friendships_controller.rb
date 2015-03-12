@@ -1,6 +1,10 @@
 class FriendshipsController < ApplicationController
   before_action :require_user
 
+  def index
+    @friendships = current_user.friendships
+  end
+
   def destroy
     friendship = Friendship.find(params[:id])
 

@@ -19,7 +19,9 @@ Myflix::Application.routes.draw do
     resources :reviews, only: [:create]
   end
 
-  resources :users, only: [:create, :show, :index]
+  resources :users, only: [:create, :show]
+  get '/people', to: "friendships#index"
+
   resources :categories, only: [:show]
   resources :friendships, only: [:destroy]
 

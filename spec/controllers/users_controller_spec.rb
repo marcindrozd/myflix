@@ -50,21 +50,4 @@ describe UsersController do
       expect(assigns(:user)).to eq(bob)
     end
   end
-
-  describe "GET index" do
-    it_behaves_like "requires sign in" do
-      let(:action) { get :index }
-    end
-
-    it "assigns @friends variable" do
-      alice = Fabricate(:user)
-      bob = Fabricate(:user)
-      charlie = Fabricate(:user)
-      set_current_user(bob)
-      friend_alice = Fabricate(:friendship, user_id: bob.id, friend_id: alice.id)
-      friend_charlie = Fabricate(:friendship, user_id: bob.id, friend_id: charlie.id)
-      get :index
-      expect(assigns(:friendships)).to eq([friend_alice, friend_charlie])
-    end
-  end
 end
