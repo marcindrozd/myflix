@@ -27,6 +27,6 @@ Myflix::Application.configure do
     :domain         => ENV['MAILGUN_DOMAIN'],
     :user_name      => ENV['MAILGUN_USERNAME'],
     :password       => ENV['MAILGUN_PASSWORD'],
-    :authentication => :plain,
-  }}
+    :authentication => :plain
+  }
 end
