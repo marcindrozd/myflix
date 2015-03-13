@@ -27,10 +27,15 @@ class PasswordsController < ApplicationController
     @user = User.find_by_token(params[:token])
 
     if @user
-      @user.password = params[:password]
-      flash[:success] = "Password reset was successful. You may now log in with your new password!"
-      @user.update_attributes(token: nil)
-      redirect_to sign_in_path
+      if params[:password].blank?
+        flash.now[:danger] = "Password can't be blank!"
+        render :reset_password
+      else
+        @user.password = params[:password]
+        flash[:success] = "Password reset was successful. You may now log in with your new password!"
+        @user.update_attributes(token: nil)
+        redirect_to sign_in_path
+      end
     else
       redirect_to invalid_token_path
     end

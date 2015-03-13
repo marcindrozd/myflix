@@ -69,7 +69,7 @@ describe PasswordsController do
         bob = Fabricate(:user)
         token = SecureRandom.urlsafe_base64
         bob.update_attributes(token: token)
-        post :new_password, token: token
+        post :new_password, token: token, password: "password"
         expect(response).to redirect_to sign_in_path
       end
 
@@ -77,7 +77,7 @@ describe PasswordsController do
         bob = Fabricate(:user)
         token = SecureRandom.urlsafe_base64
         bob.update_attributes(token: token)
-        post :new_password, token: token
+        post :new_password, token: token, password: "password"
         expect(assigns(:user)).to eq(bob)
       end
 
@@ -94,7 +94,7 @@ describe PasswordsController do
         bob = Fabricate(:user)
         token = SecureRandom.urlsafe_base64
         bob.update_attributes(token: token)
-        post :new_password, token: token
+        post :new_password, token: token, password: "password"
         expect(flash[:success]).not_to be_blank
       end
 
@@ -104,6 +104,14 @@ describe PasswordsController do
         bob.update_attributes(token: token)
         post :new_password, token: token, password: "password"
         expect(bob.reload.token).to be_nil
+      end
+
+      it "displays error message when password is blank" do
+        bob = Fabricate(:user)
+        token = SecureRandom.urlsafe_base64
+        bob.update_attributes(token: token)
+        post :new_password, token: token, password: ""
+        expect(flash[:danger]).to eq("Password can't be blank!")
       end
     end
 
