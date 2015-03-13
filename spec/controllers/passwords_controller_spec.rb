@@ -7,12 +7,12 @@ describe PasswordsController do
     context "with blank email address" do
       it "flashes the error message" do
         post :request_token, email: ""
-        expect(flash.now[:danger]).to eq("Email cannot be blank!")
+        expect(flash[:danger]).to be_present
       end
 
       it "renders the forgot password page" do
         post :request_token, email: ""
-        expect(response).to render_template :forgot_password
+        expect(response).to redirect_to :forgot_password
       end
     end
 
@@ -52,7 +52,7 @@ describe PasswordsController do
       it "flashes error message if given email address is not found" do
         bob = Fabricate(:user)
         post :request_token, email: "text@wrong_email.com"
-        expect(flash.now[:danger]).to eq("User with this email does not exist!")
+        expect(flash[:danger]).to be_present
       end
 
       it "does not send an email when email address is not found" do
@@ -95,7 +95,7 @@ describe PasswordsController do
         token = SecureRandom.urlsafe_base64
         bob.update_attributes(token: token)
         post :new_password, token: token, password: "password"
-        expect(flash[:success]).not_to be_blank
+        expect(flash[:success]).to be_present
       end
 
       it "deletes the token from database after successful password reset" do

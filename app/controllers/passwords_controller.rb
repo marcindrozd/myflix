@@ -4,19 +4,15 @@ class PasswordsController < ApplicationController
 
   def request_token
     @user = User.find_by(email_address: params[:email])
-    @token = SecureRandom.urlsafe_base64
 
     if @user
+      @token = SecureRandom.urlsafe_base64
       @user.update_column(:token, @token)
       UserMailer.reset_password(@user, @token).deliver
       redirect_to confirm_password_reset_path
     else
-      if params[:email].blank?
-        flash.now[:danger] = "Email cannot be blank!"
-      else
-        flash.now[:danger] = "User with this email does not exist!"
-      end
-      render :forgot_password
+      flash[:danger] = "There is something wrong with the email address."
+      redirect_to :forgot_password
     end
   end
 

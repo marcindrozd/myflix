@@ -1,7 +1,7 @@
 class UserMailer < ActionMailer::Base
   def welcome_email(user)
     @user = user
-    @url = 'http://md-myflix.herokuapp.com'
+    @url = root_url
 
     mail(from: 'example@email.com',
           to: user.email_address,
