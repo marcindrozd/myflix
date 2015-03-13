@@ -20,7 +20,7 @@ Video.create(title: "Family Guy",
             large_img_url: '/tmp/family_guy_large.jpg',
             category: categories[0])
 
-Video.create(title: "Monk",
+monk = Video.create(title: "Monk",
             description: "Adrian Monk is a brilliant San Francisco detective, whose obsessive compulsive disorder just happens to get in the way.",
             small_img_url: '/tmp/monk.jpg',
             large_img_url: '/tmp/monk_large.jpg',
@@ -44,7 +44,7 @@ Video.create(title: "Lion King",
             large_img_url: '/tmp/lion_king_large.jpg',
             category: categories[3])
 
-Video.create(title: "South Park",
+south_park = Video.create(title: "South Park",
             description: "Follows the misadventures of four irreverent grade-schoolers in the quiet, dysfunctional town of South Park, Colorado.",
             small_img_url: '/tmp/south_park.jpg',
             large_img_url: '/tmp/south_park_large.jpg',
@@ -79,5 +79,45 @@ napoleon = User.create(full_name: "Napoleon Bonaparte",
             email_address: "napoleon@example.com",
             password: "password")
 
-Review.create(user: napoleon, video: friends, rating: "5", content: "This is the best show ever!")
+alice = User.create(full_name: "Alice Wonderland",
+            email_address: "alice@example.com",
+            password: "password")
+
+charlie = User.create(full_name: "Charlie Brown",
+            email_address: "charlie@example.com",
+            password: "password")
+
+bob = User.create(full_name: "Robert J. Bob",
+            email_address: "bob@example.com",
+            password: "password")
+
+david = User.create(full_name: "David Hal",
+            email_address: "david@example.com",
+            password: "password")
+
+Review.create(user: alice, video: friends, rating: "5", content: "This is the best show ever!")
 Review.create(user: napoleon, video: friends, rating: "1", content: "This show is overrated.")
+Review.create(user: charlie, video: monk, rating: "5", content: "I love this show.")
+Review.create(user: alice, video: monk, rating: "4", content: "This is an interesting show.")
+Review.create(user: napoleon, video: south_park, rating: "5", content: "This is incredibely funny.")
+Review.create(user: alice, video: south_park, rating: "2", content: "I don't get this humor.")
+Review.create(user: charlie, video: south_park, rating: "3", content: "Early episodes were really great.")
+Review.create(user: charlie, video: friends, rating: "3", content: "It's ok.")
+
+QueueItem.create(video: monk, user: alice, list_order: 1)
+QueueItem.create(video: south_park, user: alice, list_order: 2)
+QueueItem.create(video: friends, user: alice, list_order: 3)
+QueueItem.create(video: monk, user: bob, list_order: 1)
+QueueItem.create(video: monk, user: charlie, list_order: 1)
+QueueItem.create(video: monk, user: david, list_order: 1)
+QueueItem.create(video: friends, user: david, list_order: 2)
+
+Friendship.create(user: napoleon, friend: alice)
+Friendship.create(user: napoleon, friend: bob)
+Friendship.create(user: napoleon, friend: david)
+Friendship.create(user: napoleon, friend: charlie)
+Friendship.create(user: bob, friend: alice)
+Friendship.create(user: bob, friend: charlie)
+Friendship.create(user: david, friend: charlie)
+Friendship.create(user: charlie, friend: napoleon)
+Friendship.create(user: charlie, friend: alice)

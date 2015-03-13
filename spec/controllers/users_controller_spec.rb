@@ -36,5 +36,37 @@ describe UsersController do
         expect(response).to render_template :new
       end
     end
+
+    context "sending email" do
+      before { UserMailer.deliveries.clear }
+
+      it "send an email" do
+        post :create, user: Fabricate.attributes_for(:user)
+        expect(UserMailer.deliveries.count).to eq(1)
+      end
+
+      it "sends the email to correct recipient" do
+        post :create, user: Fabricate.attributes_for(:user, email_address: "alice@example.com")
+        expect(UserMailer.deliveries.last.to).to eq(["alice@example.com"])
+      end
+
+      it "sends the email with correct content" do
+        post :create, user: Fabricate.attributes_for(:user)
+        expect(UserMailer.deliveries.last.body).to have_content("Welcome to myFlix")
+      end
+    end
+  end
+
+  describe "GET show" do
+    it_behaves_like "requires sign in" do
+      let(:action) { get :show, id: 3 }
+    end
+
+    it "assigns @user variable" do
+      set_current_user
+      bob = Fabricate(:user)
+      get :show, id: bob.id
+      expect(assigns(:user)).to eq(bob)
+    end
   end
 end

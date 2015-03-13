@@ -31,7 +31,7 @@ end
 
 def add_to_queue(video)
   visit home_path
-  find("a[href='/videos/#{video.id}']").click
+  click_video_title(video)
   click_link('+ My Queue')
 end
 
