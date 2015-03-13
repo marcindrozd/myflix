@@ -38,7 +38,7 @@ describe UsersController do
     end
 
     context "sending email" do
-      after { UserMailer.deliveries.clear }
+      before { UserMailer.deliveries.clear }
 
       it "send an email" do
         post :create, user: Fabricate.attributes_for(:user)
