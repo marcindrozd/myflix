@@ -31,6 +31,7 @@ Myflix::Application.routes.draw do
 
   resources :categories, only: [:show]
   resources :friendships, only: [:create, :destroy]
+  resources :invites, only: [:new, :create]
 
   get 'ui(/:action)', controller: 'ui'
 end

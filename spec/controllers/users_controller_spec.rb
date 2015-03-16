@@ -55,6 +55,29 @@ describe UsersController do
         expect(UserMailer.deliveries.last.body).to have_content("Welcome to myFlix")
       end
     end
+
+    context "when user was invited by other user" do
+      it "finds the inviter by invite token" do
+        alice = Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd")
+        bob = Fabricate(:user, invite_token: "abcd")
+        post :create, user: alice
+        expect(assigns(:inviter)).to eq(bob)
+      end
+
+      it "follows the inviter" do
+        alice = Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd")
+        bob = Fabricate(:user, invite_token: "abcd")
+        post :create, user: alice
+        expect(User.find_by(full_name: "Alice Black").friends).to include(bob)
+      end
+
+      it "adds the new user to inviter followings" do
+        alice = Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd")
+        bob = Fabricate(:user, invite_token: "abcd")
+        post :create, user: alice
+        expect(bob.friends).to include(User.find_by(full_name: "Alice Black"))
+      end
+    end
   end
 
   describe "GET show" do

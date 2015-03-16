@@ -10,9 +10,17 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      invite_token = params[:user][:invite_token]
       flash[:success] = "You have been registered successfully!"
       session[:user_id] = @user.id
       UserMailer.welcome_email(@user).deliver
+
+      if invite_token
+        @inviter = User.find_by(invite_token: invite_token)
+        current_user.friends << @inviter
+        @inviter.friends << current_user
+      end
+
       redirect_to home_path
     else
       render :new
@@ -26,6 +34,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:full_name, :email_address, :password)
+    params.require(:user).permit(:full_name, :email_address, :password, :invite_token)
   end
 end

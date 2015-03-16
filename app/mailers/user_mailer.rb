@@ -16,4 +16,16 @@ class UserMailer < ActionMailer::Base
           to: @user.email_address,
           subject: "Password reset was requested"
   end
+
+  def send_invite(existing_user, new_user_name, email, message, token)
+    @existing_user = existing_user
+    @name = new_user_name
+    @email = email
+    @message = message
+    @token = token
+
+    mail(from: 'example@email.com',
+          to: @email,
+          subject: "You have been invited to myFlix!")
+  end
 end
