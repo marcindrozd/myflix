@@ -10,9 +10,7 @@ class InvitesController < ApplicationController
 
     if @invitation.save
       @invitation.update_column(:invite_token, SecureRandom.urlsafe_base64)
-      UserMailer.send_invite(current_user, @invitation.friend_name,
-                              @invitation.friend_email, @invitation.message,
-                              @invitation.invite_token).deliver
+      UserMailer.send_invite(@invitation).deliver
       flash[:success] = "Invitation has been sent!"
       redirect_to new_invite_path
     else

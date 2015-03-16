@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
     @url = root_url
 
     mail(from: 'example@email.com',
-          to: user.email_address,
+          to: @user.email_address,
           subject: "Welcome to myFlix!")
   end
 
@@ -17,15 +17,11 @@ class UserMailer < ActionMailer::Base
           subject: "Password reset was requested"
   end
 
-  def send_invite(existing_user, new_user_name, email, message, token)
-    @existing_user = existing_user
-    @name = new_user_name
-    @email = email
-    @message = message
-    @token = token
+  def send_invite(invitation)
+    @invitation = invitation
 
     mail(from: 'example@email.com',
-          to: @email,
+          to: @invitation.friend_email,
           subject: "You have been invited to myFlix!")
   end
 end
