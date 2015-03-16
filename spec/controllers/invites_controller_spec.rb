@@ -14,7 +14,6 @@ describe InvitesController do
   end
 
   describe "POST create" do
-
     it_behaves_like "requires sign in" do
       let(:action) { post :create}
     end

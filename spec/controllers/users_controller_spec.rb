@@ -6,11 +6,25 @@ describe UsersController do
       get :new
       expect(assigns(:user)).to be_instance_of(User)
     end
+  end
 
-    it "sets email address when user was invited" do
+  describe "GET new_with_invite" do
+    it "should render new template" do
+      invitation = Fabricate(:invite)
+      get :new_with_invite, token: invitation.invite_token
+      expect(response).to render_template :new
+    end
+
+    it "sets user with invited user's email" do
+      invitation = Fabricate(:invite)
+      get :new_with_invite, token: invitation.invite_token
+      expect(assigns(:user).email_address).to eq(invitation.friend_email)
+    end
+
+    it "redirects to expired token page when token is not valid" do
       Fabricate(:invite, invite_token: "abcd")
-      get :new, token: "abcd"
-      expect(assigns(:email)).to be_present
+      get :new_with_invite, token: "xyz"
+      expect(response).to redirect_to invalid_token_path
     end
   end
 
@@ -83,6 +97,11 @@ describe UsersController do
       it "adds the new user to inviter followings" do
         post :create, user: alice
         expect(bob.friends).to include(User.find_by(full_name: "Alice Black"))
+      end
+
+      it "expires the invitation token after user was registered" do
+        post :create, user: alice
+        expect(Invite.first.invite_token).to be_blank
       end
     end
   end

@@ -14,7 +14,7 @@
     </p>
     <p>
       You may sign up by using the following link:
-      <%= link_to "Join MyFlix", register_url(token: @invitation.invite_token) %>
+      <%= link_to "Join MyFlix", register_with_token_url(@invitation.invite_token) %>
     </p>
   </body>
 </html>

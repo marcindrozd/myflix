@@ -4,9 +4,16 @@ class UsersController < ApplicationController
   def new
     redirect_to home_path if logged_in?
     @user = User.new
+  end
 
-    if params[:token]
-      @email = Invite.find_by(invite_token: params[:token]).friend_email
+  def new_with_invite
+    @invitation = find_invite(params[:token])
+
+    if @invitation
+      @user = User.new(email_address: @invitation.friend_email)
+      render :new
+    else
+      redirect_to invalid_token_path
     end
   end
 
@@ -20,10 +27,11 @@ class UsersController < ApplicationController
       UserMailer.welcome_email(@user).deliver
 
       if invite_token.present?
-        invite = Invite.find_by(invite_token: invite_token)
+        invite = find_invite(invite_token)
         @inviter = invite.inviter
-        current_user.friends << @inviter
-        @inviter.friends << current_user
+        current_user.follow(@inviter)
+        @inviter.follow(current_user)
+        invite.update_column(:invite_token, nil)
       end
 
       redirect_to home_path
@@ -40,5 +48,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:full_name, :email_address, :password)
+  end
+
+  def find_invite(token)
+    Invite.find_by(invite_token: token)
   end
 end

@@ -24,4 +24,8 @@ class User < ActiveRecord::Base
   def can_follow?(another_user)
     !(friends.include?(another_user) || self == another_user)
   end
+
+  def follow(another_user)
+    friends << another_user if can_follow?(another_user)
+  end
 end

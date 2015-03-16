@@ -37,4 +37,19 @@ describe User do
       expect(bob.not_in_queue?(video)).to be_falsey
     end
   end
+
+  describe "#follow" do
+    it "adds selected user to friends" do
+      alice = Fabricate(:user)
+      bob = Fabricate(:user)
+      alice.follow(bob)
+      expect(alice.friends).to include(bob)
+    end
+
+    it "does not add current user to friends" do
+      alice = Fabricate(:user)
+      alice.follow(alice)
+      expect(alice.friends).not_to include(alice)
+    end
+  end
 end

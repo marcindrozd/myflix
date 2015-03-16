@@ -5,10 +5,10 @@
         %header
           %h1 Register
         %fieldset
-          = f.email_field :email_address, value: @email
+          = f.email_field :email_address, value: @user.email_address
           = f.password_field :password
           = f.text_field :full_name
-          = f.hidden_field :invite_token, value: params[:token]
+          = f.hidden_field :invite_token, value: @invitation.invite_token if @invitation
           %fieldset.actions.control-group.col-sm-offset-2
             .controls
               = f.submit "Sign Up"
