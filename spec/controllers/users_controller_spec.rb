@@ -9,7 +9,7 @@ describe UsersController do
   end
 
   describe "GET new_with_invite" do
-    it "should render new template" do
+    it "renders new template" do
       invitation = Fabricate(:invite)
       get :new_with_invite, token: invitation.invite_token
       expect(response).to render_template :new
@@ -78,29 +78,26 @@ describe UsersController do
 
     context "when user was invited" do
       let(:bob) { Fabricate(:user) }
-      let(:alice) { Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd") }
-
-      before do
-        Fabricate(:invite, inviter: bob, friend_name: "Alice Black", invite_token: "abcd")
-      end
+      let(:alice_attributes) { Fabricate.attributes_for(:user, full_name: "Alice Black") }
+      let(:invitation) { Fabricate(:invite, inviter: bob, friend_name: "Alice Black") }
 
       it "finds the inviter by invite token" do
-        post :create, user: alice
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
         expect(assigns(:inviter)).to eq(bob)
       end
 
       it "follows the inviter" do
-        post :create, user: alice
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
         expect(User.find_by(full_name: "Alice Black").friends).to include(bob)
       end
 
       it "adds the new user to inviter followings" do
-        post :create, user: alice
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
         expect(bob.friends).to include(User.find_by(full_name: "Alice Black"))
       end
 
       it "expires the invitation token after user was registered" do
-        post :create, user: alice
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
         expect(Invite.first.invite_token).to be_blank
       end
     end

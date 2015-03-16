@@ -3,7 +3,7 @@ require 'spec_helper'
 describe InvitesController do
   describe "GET new" do
     it_behaves_like "requires sign in" do
-      let(:action) { get :new}
+      let(:action) { get :new }
     end
 
     it "sets @invitation variable" do
@@ -15,7 +15,7 @@ describe InvitesController do
 
   describe "POST create" do
     it_behaves_like "requires sign in" do
-      let(:action) { post :create}
+      let(:action) { post :create }
     end
 
     context "with valid data" do
@@ -24,7 +24,7 @@ describe InvitesController do
       before do
         UserMailer.deliveries.clear
         set_current_user(bob)
-        post :create, :invite => { friend_name: "Alice Wonderland",
+        post :create, invite: { friend_name: "Alice Wonderland",
                       friend_email: "alice@example.com",
                       message: "hi Alice! Please check this site!" }
       end
@@ -68,21 +68,16 @@ describe InvitesController do
       before do
         UserMailer.deliveries.clear
         set_current_user(bob)
-        post :create, :invite => { friend_name: "Alice",
+        post :create, invite: { friend_name: "Alice",
                       friend_email: "",
                       message: "" }
       end
 
-      it "renders new page" do
-        expect(response).to render_template :new
-      end
-
-      it "displays error messages" do
-        expect(flash[:danger]).to be_present
-      end
+      it { is_expected.to render_template :new }
+      it { is_expected.to set_flash.now[:danger] }
 
       it "does not send email" do
-        expect(UserMailer.deliveries.count).to eq(0)
+        expect(UserMailer.deliveries).to be_empty
       end
     end
   end

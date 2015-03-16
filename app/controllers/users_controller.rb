@@ -11,6 +11,7 @@ class UsersController < ApplicationController
 
     if @invitation
       @user = User.new(email_address: @invitation.friend_email)
+      @token = @invitation.invite_token
       render :new
     else
       redirect_to invalid_token_path
@@ -29,13 +30,14 @@ class UsersController < ApplicationController
       if invite_token.present?
         invite = find_invite(invite_token)
         @inviter = invite.inviter
-        current_user.follow(@inviter)
-        @inviter.follow(current_user)
-        invite.update_column(:invite_token, nil)
+        @user.follow(@inviter)
+        @inviter.follow(@user)
+        invite.remove_token!
       end
 
       redirect_to home_path
     else
+      @token = params[:user][:invite_token]
       render :new
     end
   end
