@@ -18,8 +18,8 @@ Myflix::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { host: "localhost:3000"}
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
 
   config.eager_load = false
 end

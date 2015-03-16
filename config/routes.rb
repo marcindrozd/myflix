@@ -4,6 +4,7 @@ Myflix::Application.routes.draw do
   get '/sign_in', to: "sessions#new"
   post '/sign_in', to: "sessions#create"
   get '/register', to: "users#new"
+  get '/register/:token', to: "users#new_with_invite", as: "register_with_token"
   delete '/sign_out', to: "sessions#destroy"
 
   get '/home', to: "videos#index"
@@ -31,6 +32,7 @@ Myflix::Application.routes.draw do
 
   resources :categories, only: [:show]
   resources :friendships, only: [:create, :destroy]
+  resources :invites, only: [:new, :create]
 
   get 'ui(/:action)', controller: 'ui'
 end

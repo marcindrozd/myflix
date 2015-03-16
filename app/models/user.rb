@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :friends, through: :friendships
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id
   has_many :followers, through: :inverse_friendships, source: :user
+  has_many :invites, foreign_key: :inviter_id
 
   validates_presence_of :full_name, :email_address
   validates_uniqueness_of :email_address
@@ -22,5 +23,9 @@ class User < ActiveRecord::Base
 
   def can_follow?(another_user)
     !(friends.include?(another_user) || self == another_user)
+  end
+
+  def follow(another_user)
+    friends << another_user if can_follow?(another_user)
   end
 end

@@ -8,6 +8,26 @@ describe UsersController do
     end
   end
 
+  describe "GET new_with_invite" do
+    it "renders new template" do
+      invitation = Fabricate(:invite)
+      get :new_with_invite, token: invitation.invite_token
+      expect(response).to render_template :new
+    end
+
+    it "sets user with invited user's email" do
+      invitation = Fabricate(:invite)
+      get :new_with_invite, token: invitation.invite_token
+      expect(assigns(:user).email_address).to eq(invitation.friend_email)
+    end
+
+    it "redirects to expired token page when token is not valid" do
+      Fabricate(:invite, invite_token: "abcd")
+      get :new_with_invite, token: "xyz"
+      expect(response).to redirect_to invalid_token_path
+    end
+  end
+
   describe "POST create" do
     context "with valid data" do
       before do
@@ -53,6 +73,32 @@ describe UsersController do
       it "sends the email with correct content" do
         post :create, user: Fabricate.attributes_for(:user)
         expect(UserMailer.deliveries.last.body).to have_content("Welcome to myFlix")
+      end
+    end
+
+    context "when user was invited" do
+      let(:bob) { Fabricate(:user) }
+      let(:alice_attributes) { Fabricate.attributes_for(:user, full_name: "Alice Black") }
+      let(:invitation) { Fabricate(:invite, inviter: bob, friend_name: "Alice Black") }
+
+      it "finds the inviter by invite token" do
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
+        expect(assigns(:inviter)).to eq(bob)
+      end
+
+      it "follows the inviter" do
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
+        expect(User.find_by(full_name: "Alice Black").friends).to include(bob)
+      end
+
+      it "adds the new user to inviter followings" do
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
+        expect(bob.friends).to include(User.find_by(full_name: "Alice Black"))
+      end
+
+      it "expires the invitation token after user was registered" do
+        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
+        expect(Invite.first.invite_token).to be_blank
       end
     end
   end

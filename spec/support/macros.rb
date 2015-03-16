@@ -13,3 +13,7 @@ end
 def click_video_title(video)
   find("a[href='/videos/#{video.id}']").click
 end
+
+def sign_out
+  click_link('Sign Out')
+end

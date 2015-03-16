@@ -10,6 +10,7 @@ describe User do
   it { should have_many(:friendships) }
   it { should have_many(:friends).through(:friendships) }
   it { should have_many(:followers).through(:inverse_friendships) }
+  it { should have_many(:invites) }
 
   describe "#recalculate_order" do
     it "updates the order of videos in user's queue when a video to always start with 1" do
@@ -34,6 +35,21 @@ describe User do
       video = Fabricate(:video)
       queue_item = Fabricate(:queue_item, video: video, user: bob)
       expect(bob.not_in_queue?(video)).to be_falsey
+    end
+  end
+
+  describe "#follow" do
+    it "adds selected user to friends" do
+      alice = Fabricate(:user)
+      bob = Fabricate(:user)
+      alice.follow(bob)
+      expect(alice.friends).to include(bob)
+    end
+
+    it "does not add current user to friends" do
+      alice = Fabricate(:user)
+      alice.follow(alice)
+      expect(alice.friends).not_to include(alice)
     end
   end
 end
