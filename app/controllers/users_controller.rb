@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       UserMailer.welcome_email(@user).deliver
 
-      if invite_token
+      if invite_token.present?
         invite = Invite.find_by(invite_token: invite_token)
         @inviter = invite.inviter
         current_user.friends << @inviter
