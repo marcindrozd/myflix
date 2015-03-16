@@ -10,6 +10,7 @@ describe User do
   it { should have_many(:friendships) }
   it { should have_many(:friends).through(:friendships) }
   it { should have_many(:followers).through(:inverse_friendships) }
+  it { should have_many(:invites) }
 
   describe "#recalculate_order" do
     it "updates the order of videos in user's queue when a video to always start with 1" do

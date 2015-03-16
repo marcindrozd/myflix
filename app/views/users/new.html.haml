@@ -5,7 +5,7 @@
         %header
           %h1 Register
         %fieldset
-          = f.email_field :email_address
+          = f.email_field :email_address, value: @email
           = f.password_field :password
           = f.text_field :full_name
           = f.hidden_field :invite_token, value: params[:token]

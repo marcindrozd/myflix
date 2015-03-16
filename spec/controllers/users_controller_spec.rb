@@ -6,6 +6,12 @@ describe UsersController do
       get :new
       expect(assigns(:user)).to be_instance_of(User)
     end
+
+    it "sets email address when user was invited" do
+      Fabricate(:invite, invite_token: "abcd")
+      get :new, token: "abcd"
+      expect(assigns(:email)).to be_present
+    end
   end
 
   describe "POST create" do
@@ -56,24 +62,25 @@ describe UsersController do
       end
     end
 
-    context "when user was invited by other user" do
+    context "when user was invited" do
+      let(:bob) { Fabricate(:user) }
+      let(:alice) { Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd") }
+
+      before do
+        Fabricate(:invite, inviter: bob, friend_name: "Alice Black", invite_token: "abcd")
+      end
+
       it "finds the inviter by invite token" do
-        alice = Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd")
-        bob = Fabricate(:user, invite_token: "abcd")
         post :create, user: alice
         expect(assigns(:inviter)).to eq(bob)
       end
 
       it "follows the inviter" do
-        alice = Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd")
-        bob = Fabricate(:user, invite_token: "abcd")
         post :create, user: alice
         expect(User.find_by(full_name: "Alice Black").friends).to include(bob)
       end
 
       it "adds the new user to inviter followings" do
-        alice = Fabricate.attributes_for(:user, full_name: "Alice Black", invite_token: "abcd")
-        bob = Fabricate(:user, invite_token: "abcd")
         post :create, user: alice
         expect(bob.friends).to include(User.find_by(full_name: "Alice Black"))
       end

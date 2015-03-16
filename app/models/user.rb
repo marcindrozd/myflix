@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :friends, through: :friendships
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id
   has_many :followers, through: :inverse_friendships, source: :user
+  has_many :invites, foreign_key: :inviter_id
 
   validates_presence_of :full_name, :email_address
   validates_uniqueness_of :email_address

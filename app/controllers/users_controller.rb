@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   def new
     redirect_to home_path if logged_in?
     @user = User.new
+
+    if params[:token]
+      @email = Invite.find_by(invite_token: params[:token]).friend_email
+    end
   end
 
   def create
@@ -16,7 +20,8 @@ class UsersController < ApplicationController
       UserMailer.welcome_email(@user).deliver
 
       if invite_token
-        @inviter = User.find_by(invite_token: invite_token)
+        invite = Invite.find_by(invite_token: invite_token)
+        @inviter = invite.inviter
         current_user.friends << @inviter
         @inviter.friends << current_user
       end
@@ -34,6 +39,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:full_name, :email_address, :password, :invite_token)
+    params.require(:user).permit(:full_name, :email_address, :password)
   end
 end
