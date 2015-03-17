@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       invite_token = params[:user][:invite_token]
       flash[:success] = "You have been registered successfully!"
       session[:user_id] = @user.id
-      UserMailer.welcome_email(@user).deliver
+      UserMailer.delay.welcome_email(@user.id)
 
       if invite_token.present?
         invite = find_invite(invite_token)
