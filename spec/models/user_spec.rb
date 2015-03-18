@@ -52,4 +52,16 @@ describe User do
       expect(alice.friends).not_to include(alice)
     end
   end
+
+  describe "#not_admin?" do
+    it "returns true if current user is not an admin" do
+      bob = Fabricate(:user, admin: false)
+      expect(bob.not_admin?).to be_truthy
+    end
+
+    it "returns false if current user is admin" do
+      bob = Fabricate(:user, admin: true)
+      expect(bob.not_admin?).to be_falsey
+    end
+  end
 end
