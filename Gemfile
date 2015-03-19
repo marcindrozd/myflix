@@ -18,6 +18,7 @@ gem 'unicorn'
 gem 'sentry-raven'
 gem 'paratrooper'
 gem 'carrierwave'
+gem 'fog'
 gem 'fog-aws'
 gem 'mini_magick'
 
