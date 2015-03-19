@@ -19,6 +19,7 @@ gem 'sentry-raven'
 gem 'paratrooper'
 gem 'carrierwave'
 gem 'fog-aws'
+gem 'mini_magick'
 
 group :development do
   gem 'thin'
