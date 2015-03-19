@@ -4,6 +4,6 @@ class SmallCoverUploader < CarrierWave::Uploader::Base
   process resize_to_fill: [166, 236]
 
   def default_url(*args)
-    "/uploads/default_large.png"
+    "/uploads/default_small.png"
   end
 end
