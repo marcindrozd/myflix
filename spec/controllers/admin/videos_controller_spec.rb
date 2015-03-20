@@ -32,7 +32,8 @@ describe Admin::VideosController do
         bob = Fabricate(:admin)
         set_current_user(bob)
         category = Fabricate(:category)
-        post :create, video: { title: "futurama", category_id: category.id, description: "fantastic show" }
+        video_attributes = Fabricate.attributes_for(:video)
+        post :create, video: video_attributes.merge!(category_id: category.id)
         expect(response).to redirect_to new_admin_video_path
       end
 
@@ -40,7 +41,8 @@ describe Admin::VideosController do
         bob = Fabricate(:admin)
         set_current_user(bob)
         category = Fabricate(:category)
-        post :create, video: { title: "futurama", category_id: category.id, description: "fantastic show" }
+        video_attributes = Fabricate.attributes_for(:video)
+        post :create, video: video_attributes.merge!(category_id: category.id)
         expect(category.videos.count).to eq(1)
       end
 
@@ -48,7 +50,8 @@ describe Admin::VideosController do
         bob = Fabricate(:admin)
         set_current_user(bob)
         category = Fabricate(:category)
-        post :create, video: { title: "futurama", category_id: category.id, description: "fantastic show" }
+        video_attributes = Fabricate.attributes_for(:video)
+        post :create, video: video_attributes.merge!(category_id: category.id)
         expect(flash[:success]).to be_present
       end
     end
