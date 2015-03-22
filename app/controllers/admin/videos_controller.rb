@@ -12,7 +12,7 @@ class Admin::VideosController < AdminController
       flash[:success] = "Video added!"
       redirect_to new_admin_video_path
     else
-      flash[:danger] = "Please fill in all the fields"
+      flash.now[:danger] = "Please fill in all the fields"
       render :new
     end
   end
