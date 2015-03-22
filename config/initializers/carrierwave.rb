@@ -1,5 +1,5 @@
 CarrierWave.configure do |config|
-  if Rails.env.development?
+  if Rails.env.development? || Rails.env.staging?
     config.storage = :fog
     config.fog_directory = ENV['S3_MYFLIX_STG_DIRECTORY']
     config.fog_credentials = {
