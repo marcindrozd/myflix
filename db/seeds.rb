@@ -12,67 +12,78 @@ Video.create(title: "Futurama",
             description: "Fry, a pizza guy is accidentally frozen in 1999 and thawed out New Year's Eve 2999.",
             small_cover: open("public/uploads/futurama.jpg"),
             large_cover: open("public/uploads/futurama_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "Family Guy",
             description: "In a wacky Rhode Island town, a dysfunctional family strive to cope with everyday life as they are thrown from one crazy scenario to another.",
             small_cover: open("public/uploads/family_guy.jpg"),
             large_cover: open("public/uploads/family_guy_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 monk = Video.create(title: "Monk",
             description: "Adrian Monk is a brilliant San Francisco detective, whose obsessive compulsive disorder just happens to get in the way.",
             small_cover: open("public/uploads/monk.jpg"),
             large_cover: open("public/uploads/monk_large.jpg"),
-            category: categories[1])
+            category: categories[1],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "Indiana Jones and the Last Crusade",
             description: "When Dr. Henry Jones Sr. suddenly goes missing while pursuing the Holy Grail, eminent archaeologist Indiana Jones must follow in his father's footsteps and stop the Nazis.",
             small_cover: open("public/uploads/indiana.jpg"),
             large_cover: open("public/uploads/indiana_large.jpg"),
-            category: categories[2])
+            category: categories[2],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "Titanic",
             description: "A seventeen-year-old aristocrat, expecting to be married to a rich claimant by her mother, falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
             small_cover: open("public/uploads/titanic.jpg"),
             large_cover: open("public/uploads/titanic_large.jpg"),
-            category: categories[1])
+            category: categories[1],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "Lion King",
             description: "Lion cub and future king Simba tests his limits, supported by his family, but sometimes gets in over his head.",
             small_cover: open("public/uploads/lion_king.jpg"),
             large_cover: open("public/uploads/lion_king_large.jpg"),
-            category: categories[3])
+            category: categories[3],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 south_park = Video.create(title: "South Park",
             description: "Follows the misadventures of four irreverent grade-schoolers in the quiet, dysfunctional town of South Park, Colorado.",
             small_cover: open("public/uploads/south_park.jpg"),
             large_cover: open("public/uploads/south_park_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "Dinosaurs",
             description: "Dinosaurs follows the life of a family of dinosaurs, living in a modern world. They have TVs, fridges, etc. The only humans around are cavemen, who are viewed as pets and wild animals.",
             small_cover: open("public/uploads/dinosaurs.jpg"),
             large_cover: open("public/uploads/dinosaurs_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "The Office",
             description: "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium. Based on the hit BBC series.",
             small_cover: open("public/uploads/office.jpg"),
             large_cover: open("public/uploads/office_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 friends = Video.create(title: "Friends",
             description: "Follows the lives of six 20-something friends living in Manhattan.",
             small_cover: open("public/uploads/friends.jpg"),
             large_cover: open("public/uploads/friends_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 Video.create(title: "Cars 2",
             description: "Star race car Lightning McQueen and his pal Mater head overseas to compete in the World Grand Prix race. But the road to the championship becomes rocky as Mater gets caught up in an intriguing adventure of his own: international espionage.",
             small_cover: open("public/uploads/cars.jpg"),
             large_cover: open("public/uploads/cars_large.jpg"),
-            category: categories[0])
+            category: categories[0],
+            video_url: https://s3.eu-central-1.amazonaws.com/md-myflix-sample-video/Popeye_forPresident_512kb.mp4)
 
 
 napoleon = User.create(full_name: "Napoleon Bonaparte",
