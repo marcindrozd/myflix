@@ -7,7 +7,7 @@ describe Video do
   it { should validate_presence_of(:large_cover) }
   it { should validate_presence_of(:small_cover) }
   it { should validate_presence_of(:video_url) }
-  it { should have_many(:reviews).order('created_at desc')}
+  it { should have_many(:reviews).order('created_at desc') }
 
   describe ".search_by_title" do
     let(:small_cover) { File.open(File.join(Rails.root,'spec','support','videos', 'small_cover.png')) }
