@@ -17,6 +17,12 @@ gem 'sidekiq'
 gem 'unicorn'
 gem 'sentry-raven'
 gem 'paratrooper'
+gem 'carrierwave'
+gem 'fog'
+gem 'fog-aws'
+gem 'mini_magick'
+gem 'figaro'
+gem 'stripe'
 
 group :development do
   gem 'thin'
@@ -39,6 +45,6 @@ group :test do
   gem 'capybara-email'
 end
 
-group :production do
+group :production, :staging do
   gem 'rails_12factor'
 end

@@ -23,6 +23,10 @@ Myflix::Application.routes.draw do
   resources :users, only: [:create, :show]
   get '/people', to: "friendships#index"
 
+  namespace :admin do
+    resources :videos, only: [:new, :create]
+  end
+
   get '/forgot_password', to: "passwords#forgot_password"
   post '/request_token', to: "passwords#request_token"
   get '/confirm_password_reset', to: "passwords#confirm_password_reset"
