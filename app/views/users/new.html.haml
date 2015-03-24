@@ -11,4 +11,8 @@
           = f.hidden_field :invite_token, value: @token
           %fieldset.actions.control-group.col-sm-offset-2
             .controls
-              = f.submit "Sign Up"
+              %script(src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_9olXx4DvcGS5hWpkUVjTDNJA"
+              data-amount="999"
+              data-name="MyFlix video service"
+              data-description="Subscribe to best video service for $9.99")

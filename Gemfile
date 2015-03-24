@@ -21,6 +21,8 @@ gem 'carrierwave'
 gem 'fog'
 gem 'fog-aws'
 gem 'mini_magick'
+gem 'figaro'
+gem 'stripe'
 
 group :development do
   gem 'thin'
