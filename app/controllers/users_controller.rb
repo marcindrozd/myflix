@@ -23,24 +23,14 @@ class UsersController < ApplicationController
 
     if @user.save
       invite_token = params[:user][:invite_token]
-      flash[:success] = "You have been registered successfully!"
-      session[:user_id] = @user.id
-      UserMailer.welcome_email(@user.id).deliver
 
       Stripe.api_key = ENV['stripe_api_key']
-
-      token = params[:stripeToken]
-
-      begin
-        charge = Stripe::Charge.create(
+      Stripe::Charge.create(
           :amount => 999,
           :currency => "usd",
-          :source => token,
+          :source => params[:stripeToken],
           :description => "MyFlix subscription - #{@user.email_address}"
         )
-      rescue Stripe::CardError => e
-        flash[:danger] = e.message
-      end
 
       if invite_token.present?
         invite = find_invite(invite_token)
@@ -50,6 +40,9 @@ class UsersController < ApplicationController
         invite.remove_token!
       end
 
+      flash[:success] = "You have been registered successfully!"
+      session[:user_id] = @user.id
+      UserMailer.welcome_email(@user.id).deliver
       redirect_to home_path
     else
       @token = params[:user][:invite_token]
