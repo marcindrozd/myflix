@@ -35,8 +35,6 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails', '2.99'
-  gem 'vcr'
-  gem 'webmock'
 end
 
 group :test do
@@ -45,6 +43,9 @@ group :test do
   gem 'capybara'
   gem 'launchy'
   gem 'capybara-email'
+  gem 'vcr'
+  gem 'webmock'
+  gem 'selenium-webdriver'
 end
 
 group :production, :staging do

@@ -25,9 +25,8 @@ class UsersController < ApplicationController
       invite_token = params[:user][:invite_token]
 
       Stripe.api_key = ENV['stripe_api_key']
-      Stripe::Charge.create(
+      StripeWrapper::Charge.create(
           :amount => 999,
-          :currency => "usd",
           :source => params[:stripeToken],
           :description => "MyFlix subscription - #{@user.email_address}"
         )

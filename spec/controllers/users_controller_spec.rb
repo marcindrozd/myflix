@@ -31,6 +31,7 @@ describe UsersController do
   describe "POST create" do
     context "with valid data" do
       before do
+        StripeWrapper::Charge.stub(:create)
         post :create, user: Fabricate.attributes_for(:user)
       end
 
@@ -58,7 +59,10 @@ describe UsersController do
     end
 
     context "sending email" do
-      before { UserMailer.deliveries.clear }
+      before do
+        UserMailer.deliveries.clear
+        StripeWrapper::Charge.stub(:create)
+      end
 
       it "send an email" do
         post :create, user: Fabricate.attributes_for(:user)
@@ -80,6 +84,8 @@ describe UsersController do
       let(:bob) { Fabricate(:user) }
       let(:alice_attributes) { Fabricate.attributes_for(:user, full_name: "Alice Black") }
       let(:invitation) { Fabricate(:invite, inviter: bob, friend_name: "Alice Black") }
+
+      before { StripeWrapper::Charge.stub(:create) }
 
       it "finds the inviter by invite token" do
         post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
