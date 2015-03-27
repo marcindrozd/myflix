@@ -31,14 +31,7 @@ class UsersController < ApplicationController
       if charge.successful?
         @user.save
 
-        invite_token = params[:user][:invite_token]
-        if invite_token.present?
-          invite = find_invite(invite_token)
-          @inviter = invite.inviter
-          @user.follow(@inviter)
-          @inviter.follow(@user)
-          invite.remove_token!
-        end
+        handle_invitation
 
         flash[:success] = "You have been registered successfully!"
         session[:user_id] = @user.id
@@ -66,5 +59,16 @@ class UsersController < ApplicationController
 
   def find_invite(token)
     Invite.find_by(invite_token: token)
+  end
+
+  def handle_invitation
+    invite_token = params[:user][:invite_token]
+    if invite_token.present?
+      invite = find_invite(invite_token)
+      @inviter = invite.inviter
+      @user.follow(@inviter)
+      @inviter.follow(@user)
+      invite.remove_token!
+    end
   end
 end
