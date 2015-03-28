@@ -43,6 +43,7 @@ class UsersController < ApplicationController
       end
     else
       @token = params[:user][:invite_token]
+      flash[:danger] = "Please correct the below errors"
       render :new
     end
   end
