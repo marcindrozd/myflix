@@ -48,4 +48,18 @@ describe Video do
       expect(Video.search_by_title("")).to eq([])
     end
   end
+
+  describe "#rating" do
+    it "returns 0 if no ratings" do
+      video = Fabricate(:video)
+      expect(video.rating).to eq('0')
+    end
+
+    it "returns average if there are ratings" do
+      video = Fabricate(:video)
+      Fabricate(:review, rating: 5, video: video)
+      Fabricate(:review, rating: 1, video: video)
+      expect(video.rating).to eq('3.0')
+    end
+  end
 end

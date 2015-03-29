@@ -3,7 +3,7 @@ class VideoDecorator < Draper::Decorator
 
   def review_rating
     if object.reviews.any?
-      "#{Review.average(object)} / 5.0"
+      "#{object.rating} / 5.0"
     else
       "No ratings yet"
     end
