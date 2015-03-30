@@ -29,116 +29,28 @@ describe UsersController do
   end
 
   describe "POST create" do
-    context "with valid personal info and valid card" do
-      let(:charge) { double(:charge, successful?: true) }
-
-      before do
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-        post :create, user: Fabricate.attributes_for(:user)
-      end
-
-      it "creates a user" do
-        expect(User.count).to eq(1)
-      end
-
+    context "successful user sign up" do
       it "redirects to home for successfully created user" do
+        result = double(:sign_up_result, successful?: true)
+        UserSignUp.any_instance.should_receive(:sign_up).and_return(result)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: "123"
         expect(response).to redirect_to home_path
       end
     end
 
-    context "with valid personal info and invalid card" do
+    context "failed user sign up" do
       it "renders the new template" do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined")
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-        post :create, user: Fabricate.attributes_for(:user), stripeToken: "123"
+        result = double(:sign_up_result, successful?: false, error_message: "Test error message.")
+        UserSignUp.any_instance.should_receive(:sign_up).and_return(result)
+        post :create, user: { email_address: "tex@example.com" }
         expect(response).to render_template :new
-      end
-
-      it "does not create a new user record" do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined")
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-        post :create, user: Fabricate.attributes_for(:user), stripeToken: "123"
-        expect(User.count).to eq(0)
       end
 
       it "sets error message" do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined")
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-        post :create, user: Fabricate.attributes_for(:user), stripeToken: "123"
-        expect(flash[:danger]).to be_present
-      end
-    end
-
-    context "with invalid personal info" do
-      before do
-        post :create, user: { full_name: Faker::Name.name, password: "password" }
-      end
-
-      it "does not create a new user" do
-        expect(User.count).to eq(0)
-      end
-
-      it "renders new template" do
-        expect(response).to render_template :new
-      end
-
-      it "does not charge the credit card" do
-        StripeWrapper::Charge.should_not_receive(:create)
-      end
-    end
-
-    context "sending email" do
-      let(:charge) { double(:charge, successful?: true) }
-
-      before do
-        UserMailer.deliveries.clear
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-      end
-
-      it "send an email" do
-        post :create, user: Fabricate.attributes_for(:user)
-        expect(UserMailer.deliveries.count).to eq(1)
-      end
-
-      it "sends the email to correct recipient" do
-        post :create, user: Fabricate.attributes_for(:user, email_address: "alice@example.com")
-        expect(UserMailer.deliveries.last.to).to eq(["alice@example.com"])
-      end
-
-      it "sends the email with correct content" do
-        post :create, user: Fabricate.attributes_for(:user)
-        expect(UserMailer.deliveries.last.body).to have_content("Welcome to myFlix")
-      end
-    end
-
-    context "when user was invited" do
-      let(:bob) { Fabricate(:user) }
-      let(:alice_attributes) { Fabricate.attributes_for(:user, full_name: "Alice Black") }
-      let(:invitation) { Fabricate(:invite, inviter: bob, friend_name: "Alice Black") }
-      let(:charge) { double(:charge, successful?: true) }
-
-      before do
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-      end
-
-      it "finds the inviter by invite token" do
-        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
-        expect(assigns(:inviter)).to eq(bob)
-      end
-
-      it "follows the inviter" do
-        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
-        expect(User.find_by(full_name: "Alice Black").friends).to include(bob)
-      end
-
-      it "adds the new user to inviter followings" do
-        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
-        expect(bob.friends).to include(User.find_by(full_name: "Alice Black"))
-      end
-
-      it "expires the invitation token after user was registered" do
-        post :create, user: alice_attributes.merge!(invite_token: invitation.invite_token)
-        expect(Invite.first.invite_token).to be_blank
+        result = double(:sign_up_result, successful?: false, error_message: "Test error message.")
+        UserSignUp.any_instance.should_receive(:sign_up).and_return(result)
+        post :create, user: { email_address: "tex@example.com" }
+        expect(flash[:danger]).to eq("Test error message.")
       end
     end
   end
