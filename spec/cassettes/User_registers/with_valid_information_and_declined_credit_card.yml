@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.stripe.com/v1/charges
+    uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: amount=999&currency=usd&source=tok_15lKBrHxsS6mta1yZOAkvD7i&description=MyFlix%20subscription%20-%20test%40example.com
+      string: source=tok_15nQuOHxsS6mta1yFUWHlXLQ&plan=base&email=test%40example.com
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -22,7 +22,7 @@ http_interactions:
         MacBook-Pro-Marcin.local 14.0.0 Darwin Kernel Version 14.0.0: Fri Sep 19 00:26:44
         PDT 2014; root:xnu-2782.1.97~2/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '118'
+      - '70'
   response:
     status:
       code: 402
@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sat, 28 Mar 2015 13:41:33 GMT
+      - Fri, 03 Apr 2015 09:16:13 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '162'
+      - '134'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_5Wrt8iHVhryiyjsm
+      - req_zxnecIy8lCwDOkqW
       Stripe-Version:
       - '2015-02-18'
     body:
@@ -59,10 +59,10 @@ http_interactions:
           "error": {
             "message": "Your card was declined.",
             "type": "card_error",
-            "code": "card_declined",
-            "charge": "ch_15lKBtHxsS6mta1yLumCLZ8v"
+            "param": "",
+            "code": "card_declined"
           }
         }
     http_version: 
-  recorded_at: Sat, 28 Mar 2015 13:41:37 GMT
+  recorded_at: Fri, 03 Apr 2015 09:16:13 GMT
 recorded_with: VCR 2.9.3
