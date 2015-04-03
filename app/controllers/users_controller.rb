@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def new_with_invite
-    @invitation = find_invite(params[:token])
+    @invitation = Invite.find_by(invite_token: params[:token])
 
     if @invitation
       @user = User.new(email_address: @invitation.friend_email)
@@ -21,29 +21,15 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.valid?
-      charge = StripeWrapper::Charge.create(
-          :amount => 999,
-          :source => params[:stripeToken],
-          :description => "MyFlix subscription - #{@user.email_address}"
-        )
+    result = UserSignUp.new(@user).sign_up(params[:stripeToken], params[:user][:invite_token])
 
-      if charge.successful?
-        @user.save
-
-        handle_invitation
-
-        flash[:success] = "You have been registered successfully!"
-        session[:user_id] = @user.id
-        UserMailer.welcome_email(@user.id).deliver
-        redirect_to home_path
-      else
-        flash[:danger] = charge.error_message
-        render :new
-      end
+    if result.successful?
+      flash[:success] = "You have been registered successfully!"
+      session[:user_id] = @user.id
+      redirect_to home_path
     else
       @token = params[:user][:invite_token]
-      flash[:danger] = "Please correct the below errors"
+      flash[:danger] = result.error_message
       render :new
     end
   end
@@ -56,20 +42,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:full_name, :email_address, :password)
-  end
-
-  def find_invite(token)
-    Invite.find_by(invite_token: token)
-  end
-
-  def handle_invitation
-    invite_token = params[:user][:invite_token]
-    if invite_token.present?
-      invite = find_invite(invite_token)
-      @inviter = invite.inviter
-      @user.follow(@inviter)
-      @inviter.follow(@user)
-      invite.remove_token!
-    end
   end
 end
