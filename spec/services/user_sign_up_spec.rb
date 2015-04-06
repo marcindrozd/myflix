@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserSignUp do
   context "with valid personal info and valid card" do
-    let(:customer) { double(:customer, successful?: true) }
+    let(:customer) { double(:customer, successful?: true, customer_token: "abcd") }
 
     before do
       StripeWrapper::Customer.should_receive(:create).and_return(customer)
@@ -11,6 +11,11 @@ describe UserSignUp do
     it "creates a user" do
       UserSignUp.new(Fabricate.build(:user)).sign_up("stripe_token", nil)
       expect(User.count).to eq(1)
+    end
+
+    it "adds customer token to the user" do
+      UserSignUp.new(Fabricate.build(:user)).sign_up("stripe_token", nil)
+      expect(User.first.customer_token).to eq("abcd")
     end
   end
 
@@ -36,7 +41,7 @@ describe UserSignUp do
   end
 
   context "sending email" do
-    let(:customer) { double(:customer, successful?: true) }
+    let(:customer) { double(:customer, successful?: true, customer_token: "abcd") }
 
     before do
       UserMailer.deliveries.clear
@@ -62,7 +67,7 @@ describe UserSignUp do
   context "when user was invited" do
     let(:bob) { Fabricate(:user) }
     let(:invitation) { Fabricate(:invite, inviter: bob, friend_name: "Alice Black") }
-    let(:customer) { double(:customer, successful?: true) }
+    let(:customer) { double(:customer, successful?: true, customer_token: "abcd") }
 
     before do
       StripeWrapper::Customer.should_receive(:create).and_return(customer)

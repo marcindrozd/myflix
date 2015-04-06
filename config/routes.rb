@@ -38,5 +38,7 @@ Myflix::Application.routes.draw do
   resources :friendships, only: [:create, :destroy]
   resources :invites, only: [:new, :create]
 
+  mount StripeEvent::Engine, at: '/stripe_events'
+
   get 'ui(/:action)', controller: 'ui'
 end
