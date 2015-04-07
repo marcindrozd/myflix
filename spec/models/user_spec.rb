@@ -52,4 +52,12 @@ describe User do
       expect(alice.friends).not_to include(alice)
     end
   end
+
+  describe "#deactivate!" do
+    it "deactivates active user" do
+      alice = Fabricate(:user, active: true)
+      alice.deactivate!
+      expect(alice.reload).not_to be_active
+    end
+  end
 end
