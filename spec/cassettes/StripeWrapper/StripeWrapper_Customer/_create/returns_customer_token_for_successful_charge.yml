@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers
+    uri: https://api.stripe.com/v1/tokens
     body:
       encoding: US-ASCII
-      string: source=tok_15nQuXHxsS6mta1yjV9C3ZUL&plan=base&email=test%40example.com
+      string: card[number]=4242424242424242&card[exp_month]=3&card[exp_year]=2017&card[cvc]=314
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -22,7 +22,7 @@ http_interactions:
         MacBook-Pro-Marcin.local 14.0.0 Darwin Kernel Version 14.0.0: Fri Sep 19 00:26:44
         PDT 2014; root:xnu-2782.1.97~2/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '70'
+      - '81'
   response:
     status:
       code: 200
@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 03 Apr 2015 09:16:23 GMT
+      - Mon, 06 Apr 2015 09:13:50 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '2297'
+      - '728'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -49,7 +49,97 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_TwRlonsrB3ZjWrGT
+      - req_NvBqogfrbXITyMVH
+      Stripe-Version:
+      - '2015-02-18'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "tok_15oWIkHxsS6mta1y6yvnG7de",
+          "livemode": false,
+          "created": 1428311630,
+          "used": false,
+          "object": "token",
+          "type": "card",
+          "card": {
+            "id": "card_15oWIkHxsS6mta1y9XyUZtlu",
+            "object": "card",
+            "last4": "4242",
+            "brand": "Visa",
+            "funding": "credit",
+            "exp_month": 3,
+            "exp_year": 2017,
+            "fingerprint": "a1801dj0RfTG9ojP",
+            "country": "US",
+            "name": null,
+            "address_line1": null,
+            "address_line2": null,
+            "address_city": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_country": null,
+            "cvc_check": "unchecked",
+            "address_line1_check": null,
+            "address_zip_check": null,
+            "dynamic_last4": null
+          },
+          "client_ip": "93.105.214.168"
+        }
+    http_version: 
+  recorded_at: Mon, 06 Apr 2015 09:13:50 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/customers
+    body:
+      encoding: US-ASCII
+      string: source=tok_15oWIkHxsS6mta1y6yvnG7de&plan=base&email=herta%40dibbert.net
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.20.3
+      Authorization:
+      - Bearer sk_test_fby6HxZEhZ2Uj1roR0iqUCsL
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.20.3","lang":"ruby","lang_version":"2.1.5 p273 (2014-11-13)","platform":"x86_64-darwin14.0","publisher":"stripe","uname":"Darwin
+        MacBook-Pro-Marcin.local 14.0.0 Darwin Kernel Version 14.0.0: Fri Sep 19 00:26:44
+        PDT 2014; root:xnu-2782.1.97~2/RELEASE_X86_64 x86_64"}'
+      Content-Length:
+      - '71'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 06 Apr 2015 09:13:51 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2298'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_z4Xow7YsSgwT823J
       Stripe-Version:
       - '2015-02-18'
       Strict-Transport-Security:
@@ -59,21 +149,21 @@ http_interactions:
       string: |
         {
           "object": "customer",
-          "created": 1428052582,
-          "id": "cus_5zPkJkYYBeFXnZ",
+          "created": 1428311631,
+          "id": "cus_60XNQcPLDUjcvW",
           "livemode": false,
           "description": null,
-          "email": "test@example.com",
+          "email": "herta@dibbert.net",
           "delinquent": false,
           "metadata": {},
           "subscriptions": {
             "object": "list",
             "total_count": 1,
             "has_more": false,
-            "url": "/v1/customers/cus_5zPkJkYYBeFXnZ/subscriptions",
+            "url": "/v1/customers/cus_60XNQcPLDUjcvW/subscriptions",
             "data": [
               {
-                "id": "sub_5zPkB7qTXJlbMA",
+                "id": "sub_60XN8O062UVbRs",
                 "plan": {
                   "interval": "month",
                   "name": "Base Plan",
@@ -89,12 +179,12 @@ http_interactions:
                   "statement_descriptor": null
                 },
                 "object": "subscription",
-                "start": 1428052582,
+                "start": 1428311631,
                 "status": "active",
-                "customer": "cus_5zPkJkYYBeFXnZ",
+                "customer": "cus_60XNQcPLDUjcvW",
                 "cancel_at_period_end": false,
-                "current_period_start": 1428052582,
-                "current_period_end": 1430644582,
+                "current_period_start": 1428311631,
+                "current_period_end": 1430903631,
                 "ended_at": null,
                 "trial_start": null,
                 "trial_end": null,
@@ -114,15 +204,15 @@ http_interactions:
             "object": "list",
             "total_count": 1,
             "has_more": false,
-            "url": "/v1/customers/cus_5zPkJkYYBeFXnZ/sources",
+            "url": "/v1/customers/cus_60XNQcPLDUjcvW/sources",
             "data": [
               {
-                "id": "card_15nQuXHxsS6mta1yvTWGowBv",
+                "id": "card_15oWIkHxsS6mta1y9XyUZtlu",
                 "object": "card",
                 "last4": "4242",
                 "brand": "Visa",
                 "funding": "credit",
-                "exp_month": 4,
+                "exp_month": 3,
                 "exp_year": 2017,
                 "fingerprint": "a1801dj0RfTG9ojP",
                 "country": "US",
@@ -138,12 +228,12 @@ http_interactions:
                 "address_zip_check": null,
                 "dynamic_last4": null,
                 "metadata": {},
-                "customer": "cus_5zPkJkYYBeFXnZ"
+                "customer": "cus_60XNQcPLDUjcvW"
               }
             ]
           },
-          "default_source": "card_15nQuXHxsS6mta1yvTWGowBv"
+          "default_source": "card_15oWIkHxsS6mta1y9XyUZtlu"
         }
     http_version: 
-  recorded_at: Fri, 03 Apr 2015 09:16:23 GMT
+  recorded_at: Mon, 06 Apr 2015 09:13:51 GMT
 recorded_with: VCR 2.9.3

@@ -2,22 +2,27 @@ require 'spec_helper'
 
 describe UserSignUp do
   context "with valid personal info and valid card" do
-    let(:charge) { double(:charge, successful?: true) }
+    let(:customer) { double(:customer, successful?: true, customer_token: "abcd") }
 
     before do
-      StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      StripeWrapper::Customer.should_receive(:create).and_return(customer)
     end
 
     it "creates a user" do
       UserSignUp.new(Fabricate.build(:user)).sign_up("stripe_token", nil)
       expect(User.count).to eq(1)
     end
+
+    it "adds customer token to the user" do
+      UserSignUp.new(Fabricate.build(:user)).sign_up("stripe_token", nil)
+      expect(User.first.customer_token).to eq("abcd")
+    end
   end
 
   context "with valid personal info and invalid card" do
     it "does not create a new user record" do
-      charge = double(:charge, successful?: false, error_message: "Your card was declined")
-      StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      customer = double(:customer, successful?: false, error_message: "Your card was declined")
+      StripeWrapper::Customer.should_receive(:create).and_return(customer)
       UserSignUp.new(Fabricate.build(:user)).sign_up("stripe_token", nil)
       expect(User.count).to eq(0)
     end
@@ -30,17 +35,17 @@ describe UserSignUp do
     end
 
     it "does not charge the credit card" do
-      StripeWrapper::Charge.should_not_receive(:create)
+      StripeWrapper::Customer.should_not_receive(:create)
       UserSignUp.new(Fabricate.build(:user, email_address: "")).sign_up("stripe_token", nil)
     end
   end
 
   context "sending email" do
-    let(:charge) { double(:charge, successful?: true) }
+    let(:customer) { double(:customer, successful?: true, customer_token: "abcd") }
 
     before do
       UserMailer.deliveries.clear
-      StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      StripeWrapper::Customer.should_receive(:create).and_return(customer)
     end
 
     it "send an email" do
@@ -62,10 +67,10 @@ describe UserSignUp do
   context "when user was invited" do
     let(:bob) { Fabricate(:user) }
     let(:invitation) { Fabricate(:invite, inviter: bob, friend_name: "Alice Black") }
-    let(:charge) { double(:charge, successful?: true) }
+    let(:customer) { double(:customer, successful?: true, customer_token: "abcd") }
 
     before do
-      StripeWrapper::Charge.should_receive(:create).and_return(charge)
+      StripeWrapper::Customer.should_receive(:create).and_return(customer)
       UserSignUp.new(Fabricate.build(:user, full_name: "Alice Black")).sign_up("stripe_token", invitation.invite_token)
     end
 

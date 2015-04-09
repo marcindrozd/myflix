@@ -25,6 +25,7 @@ Myflix::Application.routes.draw do
 
   namespace :admin do
     resources :videos, only: [:new, :create]
+    resources :payments, only: [:index]
   end
 
   get '/forgot_password', to: "passwords#forgot_password"
@@ -37,6 +38,8 @@ Myflix::Application.routes.draw do
   resources :categories, only: [:show]
   resources :friendships, only: [:create, :destroy]
   resources :invites, only: [:new, :create]
+
+  mount StripeEvent::Engine, at: '/stripe_events'
 
   get 'ui(/:action)', controller: 'ui'
 end
